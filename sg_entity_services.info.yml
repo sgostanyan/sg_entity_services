@@ -1,0 +1,5 @@
+name: 'SG Entity Services'
+type: module
+description: 'Entity Services module.'
+core: 8.x
+package: 'SG'

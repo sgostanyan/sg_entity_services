@@ -1,0 +1,10 @@
+{
+    "name": "sg_entity_services",
+    "type": "drupal-module",
+    "description": "Entity Services module.",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/sg_entity_services",
+    "minimum-stability": "dev",
+    "support": {}
+}
