@@ -1,0 +1,4 @@
+services:
+  sg_entity_services.service:
+    class: Drupal\sg_entity_services\Services\SgEntityServices
+    autowire: true
