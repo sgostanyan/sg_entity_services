@@ -1,5 +1,5 @@
 {
-    "name": "sg/sg_entity_services",
+    "name": "sgostanyan/sg_entity_services",
     "type": "drupal-module",
     "description": "Entity Services module.",
     "keywords": [
