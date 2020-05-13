@@ -1,10 +1,13 @@
 {
     "name": "sgostanyan/sg_entity_services",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.0",
+        "drupal/core": ">=8.0"
+    },
     "type": "drupal-module",
     "description": "Entity Services module.",
-    "keywords": [
-    ],
+    "keywords": ["drupal"],
     "homepage": "https://github.com/sgostanyan/sg_entity_services",
     "minimum-stability": "dev",
-    "support": {}
 }
