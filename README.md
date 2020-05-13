@@ -86,5 +86,57 @@ Usage:
 Drupal::service('sg_entity_services.service')->getEntityStorageManager()->getEntities('node', ['article', 'event']);
 ```
 
+## SgEntityDisplayManager
+
+ ###  getViewModes(string $entityType) :
+
+ Gives a list of available view modes for a given entity type.
+
+ __$entityType__: entity type
+
+ Usage:
+ ```bash
+$viewModes = $sgEntityService->getEntityDisplayManager()->getViewModes('node');
+ ```
+ ###  renderEntity(EntityInterface $entity, $viewMode = NULL) :
+
+ Gives a render array for a given entity.
+
+ __$entity__: entity interface
+
+ __$viewMode__: view mode
+
+ Usage:
+ ```bash
+  $renderArray = $sgEntityService->getEntityDisplayManager()->renderEntity($entity, 'teaser'));
+ ```
+
+ ###  renderArrayToMarkup(array $renderArray) :
+
+ Gives a Markup object for a given render array.
+
+ __$renderArray__: render array
+
+ Usage:
+ ```bash
+  $renderArray = $sgEntityService->getEntityDisplayManager()->renderEntity($entity, 'teaser'));
+  $markup = $sgEntityService->getEntityDisplayManager()->renderArrayToMarkup($renderArray);
+ ```
+
+###  htmlTagRender($tag, $value, array $attributes = []) :
+
+ Gives a Markup object for a given render array.
+
+ __$tag__: html tag type
+
+ __$value__: html tag's value
+
+__$attributes__: array of html attributes
+
+ Usage:
+ ```bash
+   $tag = $sgEntityService->getEntityDisplayManager()->htmlTagRender('a', 'Drupal', ['href' => 'https://drupal.org']);
+ ```
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
