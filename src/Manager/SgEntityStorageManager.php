@@ -43,8 +43,8 @@ class SgEntityStorageManager {
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   Entity type manager.
-   *   Render.
    * @param \Drupal\Core\Entity\EntityRepository $entityRepository
+   *   Entity repository.
    */
   public function __construct(EntityTypeManager $entityTypeManager, EntityRepository $entityRepository) {
     $this->entityTypeManager = $entityTypeManager;
@@ -53,11 +53,11 @@ class SgEntityStorageManager {
 
   /**
    * @param string $entityType
-   * Entity type.
-   *
+   *   Entity type.
    * @param array|null $bundles
+   *   List of entity bundles.
    * @param array $ids
-   * Entity ids.
+   *   List of entity ids.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -103,9 +103,34 @@ class SgEntityStorageManager {
 
   /**
    * @param string $entityType
+   *   Entity type.
    * @param array $values
-   *
+   *   Array of field values.
    * @param array $translations
+   *   Array of field values for translation.
+   *   Ex: [
+   *       'en' => [
+   *          'title' => 'EN title',
+   *          'body' => [
+   *            'value' => 'English summary',
+   *          ],
+   *          'field_tags' => [
+   *            [
+   *              'target_id' => 1,
+   *            ],
+   *          ],
+   *       ],
+   *       'es' => [
+   *         'title' => 'ES title',
+   *         'body' => [
+   *           'value' => 'Spanish summary',
+   *         ],
+   *        'field_tags' => [
+   *          [
+   *            'target_id' => 1,
+   *          ],
+   *       ],
+   *     ],
    *
    * @return \Drupal\Core\Entity\EntityInterface
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -119,30 +144,52 @@ class SgEntityStorageManager {
 
     //Add translations.
     if (!empty($translations)) {
-      foreach ($translations as $langCode => $values) {
-        $this->addTranslation($entity, $langCode, $values);
-      }
+      $this->addTranslations($entity, $translations);
     }
-
     return $entity;
   }
 
   /**
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   * @param $lang
-   * @param array $values
+   *   Entity interface.
+   * @param array $translations
+   *   Array of field values for translation.
+   *   Ex: [
+   *       'en' => [
+   *          'title' => 'EN title',
+   *          'body' => [
+   *            'value' => 'English summary',
+   *          ],
+   *          'field_tags' => [
+   *            [
+   *              'target_id' => 1,
+   *            ],
+   *          ],
+   *       ],
+   *       'es' => [
+   *         'title' => 'ES title',
+   *         'body' => [
+   *           'value' => 'Spanish summary',
+   *         ],
+   *        'field_tags' => [
+   *          [
+   *            'target_id' => 1,
+   *          ],
+   *       ],
+   *     ],
    *
-   * @return mixed
+   * @return \Drupal\Core\Entity\EntityInterface
    */
-  public function addTranslation(EntityInterface $entity, $lang, array $values) {
-    if ($entity && !$entity->hasTranslation($lang)) {
-      $entityArray = $entity->toArray();
-      $translatedEntityArray = array_merge($entityArray, $values);
-      $translatedEntity = $entity->addTranslation($lang, $translatedEntityArray);
-      $translatedEntity->save();
-      return $translatedEntity;
+  public function addTranslations(EntityInterface $entity, array $translations) {
+    foreach ($translations as $lang => $values) {
+      if ($entity && !$entity->hasTranslation($lang)) {
+        $entityArray = $entity->toArray();
+        $translatedEntityArray = array_merge($entityArray, $values);
+        $translatedEntity = $entity->addTranslation($lang, $translatedEntityArray);
+        $translatedEntity->save();
+      }
     }
-    return NULL;
+    return $entity;
   }
 
 }

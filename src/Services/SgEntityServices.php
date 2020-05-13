@@ -2,6 +2,7 @@
 
 namespace Drupal\sg_entity_services\Services;
 
+use Drupal\sg_entity_services\Manager\SgEntityDisplayManager;
 use Drupal\sg_entity_services\Manager\SgEntityStorageManager;
 
 /**
@@ -17,12 +18,19 @@ class SgEntityServices {
   protected $sgEntityStorageManager;
 
   /**
+   * @var \Drupal\sg_entity_services\Manager\SgEntityDisplayManager
+   */
+  protected $sgEntityDisplayManager;
+
+  /**
    * SgEntityServices constructor.
    *
    * @param \Drupal\sg_entity_services\Manager\SgEntityStorageManager $sgEntityStorageManager
+   * @param \Drupal\sg_entity_services\Manager\SgEntityDisplayManager $sgEntityDisplayManager
    */
-  public function __construct(SgEntityStorageManager $sgEntityStorageManager) {
+  public function __construct(SgEntityStorageManager $sgEntityStorageManager, SgEntityDisplayManager $sgEntityDisplayManager) {
     $this->sgEntityStorageManager = $sgEntityStorageManager;
+    $this->sgEntityDisplayManager = $sgEntityDisplayManager;
   }
 
   /**
@@ -30,6 +38,13 @@ class SgEntityServices {
    */
   public function getEntityStorageManager() {
     return $this->sgEntityStorageManager;
+  }
+
+  /**
+   * @return \Drupal\sg_entity_services\Manager\SgEntityDisplayManager
+   */
+  public function getEntityDisplayManager() {
+    return $this->sgEntityDisplayManager;
   }
 
 }
