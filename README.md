@@ -1,6 +1,6 @@
 # SG Entity Services
 
-SG Entity Services is a PHP api for dealing Drupal development.
+SG Entity Services is a Drupal service for dealing with Drupal entities.
 
 ## SgEntityStorageManager
 
@@ -8,7 +8,7 @@ SG Entity Services is a PHP api for dealing Drupal development.
 
 Return entities from given parameters.
 
-__$entitytype__: entity type id
+__$entityType__: entity type id
 
 __$bundles__: desired entity bundles (optional)
 
@@ -21,9 +21,9 @@ Drupal::service('sg_entity_services.service')->getEntityStorageManager()->getEnt
 
 ### createEntity(string $entityType, array $values, array $translations = NULL) :
 
-Creates entity and translations (optional)
+Creates an entity with translations (optional)
 
-__$entitytype__: entity type id
+__$entityType__: entity type id
 
 __$values__: fields array
 
@@ -75,7 +75,7 @@ Drupal::service('sg_entity_services.service')->getEntityStorageManager()->create
 
  ### addTranslations(EntityInterface $entity, array $translations) :
 
-Add translation for a given entity.
+Add translations for an existing entity.
 
 __$entity__: entity interface
 
@@ -83,24 +83,49 @@ __$translations__: fields for translations
 
 Usage:
 ```bash
-Drupal::service('sg_entity_services.service')->getEntityStorageManager()->getEntities('node', ['article', 'event']);
+$translationsValues = [
+    'en' => [
+      'title' => 'EN title',
+      'body' => [
+        'value' => 'English summary',
+      ],
+      'field_tags' => [
+        [
+          'target_id' => 1,
+        ],
+      ],
+    ],
+    'es' => [
+      'title' => 'ES title',
+      'body' => [
+        'value' => 'Spanish summary',
+      ],
+      'field_tags' => [
+        [
+          'target_id' => 1,
+        ],
+      ],
+    ],
+  ];
+$entity = Drupal::entityTypeManager()->getStorage('node')->load(46);
+$entity = Drupal::service('sg_entity_services.service')->getEntityStorageManager()->addTranslations($entity, translationsValues);
 ```
 
 ## SgEntityDisplayManager
 
  ###  getViewModes(string $entityType) :
 
- Gives a list of available view modes for a given entity type.
+ Return a list of available view modes for a given entity type.
 
  __$entityType__: entity type
 
  Usage:
  ```bash
-$viewModes = $sgEntityService->getEntityDisplayManager()->getViewModes('node');
+$viewModes = Drupal::service('sg_entity_services.service')->getEntityDisplayManager()->getViewModes('node');
  ```
  ###  renderEntity(EntityInterface $entity, $viewMode = NULL) :
 
- Gives a render array for a given entity.
+ Return a render array for a given entity.
 
  __$entity__: entity interface
 
@@ -108,24 +133,24 @@ $viewModes = $sgEntityService->getEntityDisplayManager()->getViewModes('node');
 
  Usage:
  ```bash
-  $renderArray = $sgEntityService->getEntityDisplayManager()->renderEntity($entity, 'teaser'));
+  $renderArray = Drupal::service('sg_entity_services.service')->getEntityDisplayManager()->renderEntity($entity, 'teaser'));
  ```
 
  ###  renderArrayToMarkup(array $renderArray) :
 
- Gives a Markup object for a given render array.
+ Return a Markup object for a given render array.
 
  __$renderArray__: render array
 
  Usage:
  ```bash
-  $renderArray = $sgEntityService->getEntityDisplayManager()->renderEntity($entity, 'teaser'));
-  $markup = $sgEntityService->getEntityDisplayManager()->renderArrayToMarkup($renderArray);
+  $renderArray = Drupal::service('sg_entity_services.service')->getEntityDisplayManager()->renderEntity($entity, 'teaser'));
+  $markup = Drupal::service('sg_entity_services.service')->getEntityDisplayManager()->renderArrayToMarkup($renderArray);
  ```
 
 ###  htmlTagRender($tag, $value, array $attributes = []) :
 
- Gives a Markup object for a given render array.
+ Return a render array for a given tag element.
 
  __$tag__: html tag type
 
@@ -135,7 +160,47 @@ __$attributes__: array of html attributes
 
  Usage:
  ```bash
-   $tag = $sgEntityService->getEntityDisplayManager()->htmlTagRender('a', 'Drupal', ['href' => 'https://drupal.org']);
+   $tag = Drupal::service('sg_entity_services.service')->getEntityDisplayManager()->htmlTagRender('a', 'click here', ['href' => 'https://drupal.org']);
+ ```
+
+## SgFileManager
+
+ ###  generateFileEntity($source, $filename, $destination = 'public://') :
+
+ Create a file entity and returns the file id.
+
+ __$source__: source folder (end slash is required)
+
+ __$filename__: name of file
+
+ __$destination__: file destination, can be 'public://' or 'private://' (default is public://). It can include subfolders, end slash is required
+
+ Usage:
+ ```bash
+$fid = Drupal::service('sg_entity_services.service')->getFileManager()->generateFileEntity('public://sources/', 'tiger.jpg', 'private://animals/');
+ ```
+
+ ###  getFileInfos($fid) :
+
+ Return an array of file details: mime type, size, absolute url, relative url, internal url, system path, file usage.
+
+ __$fid__: file id.
+
+ Usage:
+ ```bash
+$fileInfos = Drupal::service('sg_entity_services.service')->getFileManager()->getFileInfos(298);
+ ```
+
+ ###  sanitizeFileSize($size) :
+
+ Return a formated file size.
+
+ __$size__: file size in bytes.
+
+ Usage:
+ ```bash
+$fileInfos = Drupal::service('sg_entity_services.service')->getFileManager()->sanitizeFileSize(286567);
+ // return "287 Ko".
  ```
 
 ## License
