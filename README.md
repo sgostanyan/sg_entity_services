@@ -215,7 +215,7 @@ $fileInfos = Drupal::service('sg_entity_services.service')->getFileManager()->ge
  Usage:
  ```bash
 $fileInfos = Drupal::service('sg_entity_services.service')->getFileManager()->sanitizeFileSize(286567);
- // return "287 Ko".
+ // $fileInfos = "287 Ko"
  ```
 
 ## SgImageManager

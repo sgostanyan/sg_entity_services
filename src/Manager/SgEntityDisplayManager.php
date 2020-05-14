@@ -54,14 +54,14 @@ class SgEntityDisplayManager {
    *   View mode array.
    */
   public function getViewModes(string $entityType) {
-    $viewModes = $this->entityDisplayRepository->getViewModes($entityType);
-    $sanitized = [];
-    if ($viewModes) {
-      foreach ($viewModes as $label => $viewMode) {
-        $sanitized[$label] = $viewMode['id'];
+    $viewModes = $this->entityDisplayRepository->getViewModeOptions($entityType);
+    $viewModesSanitized = [];
+    if (!empty($viewModes)) {
+      foreach ($viewModes as $id => $label) {
+        $viewModesSanitized[$id] = $id == 'default' ? 'default' : $label;
       }
     }
-    return $sanitized;
+    return $viewModesSanitized;
   }
 
   /**
@@ -111,8 +111,11 @@ class SgEntityDisplayManager {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function imageStyleRender($fid, $imageStyle, array $attributes = []) {
-    $uri = $this->entityTypeManager->getStorage('file')->load($fid)->getFileUri();
-    $style = $this->entityTypeManager->getStorage('image_style')->load($imageStyle);
+    $uri = $this->entityTypeManager->getStorage('file')
+      ->load($fid)
+      ->getFileUri();
+    $style = $this->entityTypeManager->getStorage('image_style')
+      ->load($imageStyle);
     $destination = $style->buildUri($uri);
     if (!file_exists($destination)) {
       $style->createDerivative($uri, $destination);
