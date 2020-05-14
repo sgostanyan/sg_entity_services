@@ -243,4 +243,4 @@ $imageUrl = Drupal::service('sg_entity_services.service')->getImageManager()->ge
  ```
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[GPL-2.0+](https://choosealicense.com/licenses/gpl-3.0/)
