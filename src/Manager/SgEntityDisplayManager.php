@@ -100,4 +100,30 @@ class SgEntityDisplayManager {
     ];
   }
 
+  /**
+   * @param $fid
+   * @param $imageStyle
+   *
+   * @param $attributes
+   *
+   * @return mixed
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function imageStyleRender($fid, $imageStyle, array $attributes = []) {
+    $uri = $this->entityTypeManager->getStorage('file')->load($fid)->getFileUri();
+    $style = $this->entityTypeManager->getStorage('image_style')->load($imageStyle);
+    $destination = $style->buildUri($uri);
+    if (!file_exists($destination)) {
+      $style->createDerivative($uri, $destination);
+    }
+
+    return [
+      '#theme' => 'image',
+      '#style_name' => $imageStyle,
+      '#uri' => $style->buildUrl($uri),
+      '#attributes' => $attributes,
+    ];
+  }
+
 }

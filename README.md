@@ -160,7 +160,22 @@ __$attributes__: array of html attributes
 
  Usage:
  ```bash
-   $tag = Drupal::service('sg_entity_services.service')->getEntityDisplayManager()->htmlTagRender('a', 'click here', ['href' => 'https://drupal.org']);
+   $tagRender = Drupal::service('sg_entity_services.service')->getEntityDisplayManager()->htmlTagRender('a', 'click here', ['href' => 'https://drupal.org']);
+ ```
+
+###  imageStyleRender($fid, $imageStyle, $attributes = []) :
+
+ Return a render array for a given image id and style.
+
+ __$fid__: image file id
+
+ __$imageStyle__: image style id
+
+__$attributes__: array of html attributes (optional)
+
+ Usage:
+ ```bash
+   $imageRender = Drupal::service('sg_entity_services.service')->imageStyleRender(298, 'thumbnail', ['class' => ['thumb-style']]);
  ```
 
 ## SgFileManager
@@ -184,7 +199,7 @@ $fid = Drupal::service('sg_entity_services.service')->getFileManager()->generate
 
  Return an array of file details: mime type, size, absolute url, relative url, internal url, system path, file usage.
 
- __$fid__: file id.
+ __$fid__: file id
 
  Usage:
  ```bash
@@ -195,12 +210,36 @@ $fileInfos = Drupal::service('sg_entity_services.service')->getFileManager()->ge
 
  Return a formated file size.
 
- __$size__: file size in bytes.
+ __$size__: file size in bytes
 
  Usage:
  ```bash
 $fileInfos = Drupal::service('sg_entity_services.service')->getFileManager()->sanitizeFileSize(286567);
  // return "287 Ko".
+ ```
+
+## SgImageManager
+
+ ###  getImageStyles() :
+
+ Return a list of available image styles.
+
+ Usage:
+ ```bash
+$imageStyles = Drupal::service('sg_entity_services.service')->getImageManager()->getImageStyles();
+ ```
+
+###  getImageStyleUrl($fid, $imageStyle) :
+
+ Return styled image url.
+
+ __$fid__: file id
+
+ __$imageStyle__: image style id
+
+ Usage:
+ ```bash
+$imageUrl = Drupal::service('sg_entity_services.service')->getImageManager()->getImageStyleUrl(298, 'thumbnail');
  ```
 
 ## License
