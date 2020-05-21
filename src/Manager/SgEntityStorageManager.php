@@ -13,21 +13,6 @@ use Drupal\Core\Entity\EntityTypeManager;
  */
 class SgEntityStorageManager {
 
-  const ENTITY_BUNDLE_INFO = [
-    'node' => [
-      'bundle' => 'type',
-      'id' => 'nid',
-    ],
-    'taxonomy_term' => [
-      'bundle' => 'vid',
-      'id' => 'tid',
-    ],
-    'media' => [
-      'bundle' => 'bundle',
-      'id' => 'mid',
-    ],
-  ];
-
   /**
    * @var \Drupal\Core\Entity\EntityTypeManager
    */
@@ -39,16 +24,23 @@ class SgEntityStorageManager {
   protected $entityRepository;
 
   /**
+   * @var \Drupal\sg_entity_services\Manager\SgEntityServicesSettingsManager
+   */
+  protected $sgEntityServicesSettingsManager;
+
+  /**
    * SgEntityStorageManager constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   Entity type manager.
    * @param \Drupal\Core\Entity\EntityRepository $entityRepository
    *   Entity repository.
+   * @param \Drupal\sg_entity_services\Manager\SgEntityServicesSettingsManager $sgEntityServicesSettingsManager
    */
-  public function __construct(EntityTypeManager $entityTypeManager, EntityRepository $entityRepository) {
+  public function __construct(EntityTypeManager $entityTypeManager, EntityRepository $entityRepository, SgEntityServicesSettingsManager $sgEntityServicesSettingsManager) {
     $this->entityTypeManager = $entityTypeManager;
     $this->entityRepository = $entityRepository;
+    $this->sgEntityServicesSettingsManager = $sgEntityServicesSettingsManager;
   }
 
   /**
@@ -64,9 +56,10 @@ class SgEntityStorageManager {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getEntities(string $entityType, array $bundles = NULL, array $ids = NULL) {
+    $entityBundleInfos = $this->sgEntityServicesSettingsManager->getEntityBundleInfos();
     $storage = $this->entityTypeManager->getStorage($entityType);
-    $entityTypeField = isset(self::ENTITY_BUNDLE_INFO[$entityType]['bundle']) ? self::ENTITY_BUNDLE_INFO[$entityType]['bundle'] : NULL;
-    $entityIdField = isset(self::ENTITY_BUNDLE_INFO[$entityType]['id']) ? self::ENTITY_BUNDLE_INFO[$entityType]['id'] : NULL;
+    $entityTypeField = isset($entityBundleInfos[$entityType]['bundle']) ? $entityBundleInfos[$entityType]['bundle'] : NULL;
+    $entityIdField = isset($entityBundleInfos[$entityType]['id']) ? $entityBundleInfos[$entityType]['id'] : NULL;
 
     // Get entity query.
     $query = $storage->getQuery();

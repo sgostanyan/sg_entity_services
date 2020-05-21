@@ -1,0 +1,12 @@
+node:
+  bundle: type
+  id: nid
+taxonomy_term:
+  bundle: vid
+  id: tid
+media:
+  bundle: bundle
+  id: mid
+paragraph:
+  bundle: type
+    id: id
